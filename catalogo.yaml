@@ -1,0 +1,109 @@
+# Recorte do Murilo (spec §2). Padrões são expressões regulares aplicadas ao
+# título normalizado: minúsculas, sem acento, só letras/números e espaços.
+# Em categorias "fixed", o primeiro modelo que casar vence: mais específico primeiro.
+
+global_exclude: [pc gamer, computador, kit upgrade, capa, pelicula, adesivo]
+used_terms: [seminovo, usado, usada, recondicionado, recondicionada, vitrine, grade a, refurbished, mostruario]
+
+categories:
+  gpu:
+    kind: fixed
+    search_terms: [rtx 3060 ti, rtx 3070, rtx 3080, rtx 3090, rtx 4060, rtx 4070, rtx 4080, rtx 4090,
+                   rtx 5050, rtx 5060, rtx 5070, rtx 5080, rtx 5090]
+    require_any: [rtx, geforce]
+    exclude: [notebook, laptop, suporte, cabo, cooler, backplate, waterblock, riser]
+    models:
+      - {id: rtx-3090-ti,       name: RTX 3090 Ti,       pattern: '\b3090\s*ti\b', priority: alta}
+      - {id: rtx-3090,          name: RTX 3090,          pattern: '\b3090\b(?!\s*ti)', priority: alta}
+      - {id: rtx-3080-ti,       name: RTX 3080 Ti,       pattern: '\b3080\s*ti\b', priority: alta}
+      - {id: rtx-3080,          name: RTX 3080,          pattern: '\b3080\b(?!\s*ti)', priority: alta}
+      - {id: rtx-3070-ti,       name: RTX 3070 Ti,       pattern: '\b3070\s*ti\b', priority: alta}
+      - {id: rtx-3070,          name: RTX 3070,          pattern: '\b3070\b(?!\s*ti)', priority: alta}
+      - {id: rtx-3060-ti,       name: RTX 3060 Ti,       pattern: '\b3060\s*ti\b', priority: alta}
+      - {id: rtx-4090,          name: RTX 4090,          pattern: '\b4090\b', priority: alta}
+      - {id: rtx-4080-super,    name: RTX 4080 Super,    pattern: '\b4080\s*super\b', priority: alta}
+      - {id: rtx-4080,          name: RTX 4080,          pattern: '\b4080\b(?!\s*super)', priority: alta}
+      - {id: rtx-4070-ti-super, name: RTX 4070 Ti Super, pattern: '\b4070\s*ti\s*super\b', priority: alta}
+      - {id: rtx-4070-ti,       name: RTX 4070 Ti,       pattern: '\b4070\s*ti\b(?!\s*super)', priority: alta}
+      - {id: rtx-4070-super,    name: RTX 4070 Super,    pattern: '\b4070\s*super\b', priority: alta}
+      - {id: rtx-4070,          name: RTX 4070,          pattern: '\b4070\b(?!\s*(ti|super))', priority: alta}
+      - {id: rtx-4060-ti-16gb,  name: RTX 4060 Ti 16GB,  pattern: '\b4060\s*ti\b', require: '\b16\s*gb\b', priority: alta}
+      - {id: rtx-4060-ti-8gb,   name: RTX 4060 Ti 8GB,   pattern: '\b4060\s*ti\b', require: '\b8\s*gb\b', priority: alta}
+      - {id: rtx-4060,          name: RTX 4060,          pattern: '\b4060\b(?!\s*ti)', priority: alta}
+      - {id: rtx-5090,          name: RTX 5090,          pattern: '\b5090\b', priority: alta}
+      - {id: rtx-5080,          name: RTX 5080,          pattern: '\b5080\b', priority: alta}
+      - {id: rtx-5070-ti,       name: RTX 5070 Ti,       pattern: '\b5070\s*ti\b', priority: alta}
+      - {id: rtx-5070,          name: RTX 5070,          pattern: '\b5070\b(?!\s*ti)', priority: alta}
+      - {id: rtx-5060-ti-16gb,  name: RTX 5060 Ti 16GB,  pattern: '\b5060\s*ti\b', require: '\b16\s*gb\b', priority: alta}
+      - {id: rtx-5060-ti-8gb,   name: RTX 5060 Ti 8GB,   pattern: '\b5060\s*ti\b', require: '\b8\s*gb\b', priority: alta}
+      - {id: rtx-5060,          name: RTX 5060,          pattern: '\b5060\b(?!\s*ti)', priority: alta}
+      - {id: rtx-5050,          name: RTX 5050,          pattern: '\b5050\b', priority: alta}
+
+  iphone:
+    kind: fixed
+    allow_used: true
+    storage_required: true
+    search_terms: [iphone 15, iphone 16, iphone 17, iphone air, iphone 18 pro]
+    require_any: [iphone]
+    exclude: [case, carregador, cabo, suporte, skin, lente, protetor, carteira, bateria externa, powerbank, pulseira]
+    models:
+      - {id: iphone-18-pro-max, name: iPhone 18 Pro Max, pattern: '\biphone\s*18\s*pro\s*max\b', priority: alta}
+      - {id: iphone-18-pro,     name: iPhone 18 Pro,     pattern: '\biphone\s*18\s*pro\b(?!\s*max)', priority: alta}
+      - {id: iphone-duo,        name: iPhone Duo,        pattern: '\biphone\s*(18\s*)?duo\b', priority: baixa}
+      - {id: iphone-17-pro-max, name: iPhone 17 Pro Max, pattern: '\biphone\s*17\s*pro\s*max\b', priority: alta}
+      - {id: iphone-17-pro,     name: iPhone 17 Pro,     pattern: '\biphone\s*17\s*pro\b(?!\s*max)', priority: alta}
+      - {id: iphone-air,        name: iPhone Air,        pattern: '\biphone\s*(17\s*)?air\b', priority: baixa}
+      - {id: iphone-17,         name: iPhone 17,         pattern: '\biphone\s*17\b(?!\s*(pro|plus|air|e)\b)', priority: baixa}
+      - {id: iphone-16-pro-max, name: iPhone 16 Pro Max, pattern: '\biphone\s*16\s*pro\s*max\b', priority: alta}
+      - {id: iphone-16-pro,     name: iPhone 16 Pro,     pattern: '\biphone\s*16\s*pro\b(?!\s*max)', priority: alta}
+      - {id: iphone-16-plus,    name: iPhone 16 Plus,    pattern: '\biphone\s*16\s*plus\b', priority: baixa}
+      - {id: iphone-16e,        name: iPhone 16e,        pattern: '\biphone\s*16\s*e\b', priority: baixa}
+      - {id: iphone-16,         name: iPhone 16,         pattern: '\biphone\s*16\b(?!\s*(pro|plus|e)\b)', priority: baixa}
+      - {id: iphone-15-pro-max, name: iPhone 15 Pro Max, pattern: '\biphone\s*15\s*pro\s*max\b', priority: alta}
+      - {id: iphone-15-pro,     name: iPhone 15 Pro,     pattern: '\biphone\s*15\s*pro\b(?!\s*max)', priority: alta}
+      - {id: iphone-15-plus,    name: iPhone 15 Plus,    pattern: '\biphone\s*15\s*plus\b', priority: baixa}
+      - {id: iphone-15,         name: iPhone 15,         pattern: '\biphone\s*15\b(?!\s*(pro|plus)\b)', priority: baixa}
+
+  controles:
+    kind: fixed
+    search_terms: [controle dualsense, controle dualsense edge, controle xbox series]
+    require_any: [controle, dualsense, gamepad, joystick]
+    exclude: [compativel, generico, generica, tipo, similar, case, suporte, base, carregador, carregadora, dock, grip, silicone, estacao, bateria]
+    models:
+      - {id: dualsense-edge, name: DualSense Edge (PS5),       pattern: '\bdualsense\s*edge\b', priority: alta}
+      - {id: dualsense,      name: DualSense (PS5),            pattern: '\bdualsense\b(?!\s*edge)', priority: alta}
+      - {id: xbox-elite,     name: Controle Xbox Elite Série 2, pattern: '\bxbox\b.*\belite\b|\belite\b.*\bxbox\b', require: '\bmicrosoft\b|\boriginal\b', priority: alta}
+      - {id: xbox-series,    name: Controle Xbox Series X|S,   pattern: '\bxbox\b', require: '\bmicrosoft\b|\boriginal\b', priority: alta}
+
+  cpu:
+    kind: open
+    search_terms: [processador intel core, processador intel core ultra, processador amd ryzen]
+    require_all:
+      - [processador, cpu]
+      - [intel, amd]
+      - [core i3, core i5, core i7, core i9, core ultra, ryzen]
+    exclude: [cooler, pasta termica, kit, placa mae, notebook]
+
+  placa_mae:
+    kind: open
+    search_terms: [placa mae asus, placa mae gigabyte]
+    require_all:
+      - [placa mae, motherboard]
+      - [asus, gigabyte, aorus]
+    exclude: [kit, processador, notebook]
+
+  ram:
+    kind: open
+    search_terms: [memoria ddr4, memoria ddr5]
+    require_all:
+      - [memoria]
+      - [ddr4, ddr5]
+    exclude: [notebook, sodimm, so dimm, laptop]
+
+  perifericos:
+    kind: open
+    search_terms: [headset corsair, teclado corsair, mouse corsair, headset logitech, teclado logitech, mouse logitech]
+    require_all:
+      - [corsair, logitech]
+      - [headset, fone, teclado, mouse]
+    exclude: [mousepad, mouse pad, feet, skate, cabo, suporte, almofada, espuma, ear pad, earpad, receptor]
