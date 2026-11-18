@@ -11,6 +11,8 @@ on:
         description: "Termo de busca. Vazio = lote padrão"
         required: false
         default: ""
+permissions:
+  contents: write
 jobs:
   capturar:
     runs-on: ubuntu-latest
@@ -35,5 +37,14 @@ jobs:
               done
             fi
           done
-      - uses: actions/upload-artifact@v4
-        with: {name: capturas, path: capturas/}
+      - name: Guardar no ramo "capturas"
+        run: |
+          git config user.name "robo-capturas"
+          git config user.email "robo-capturas@users.noreply.github.com"
+          mv capturas /tmp/capturas
+          git checkout --orphan capturas
+          git rm -rfq .
+          cp -r /tmp/capturas/. .
+          git add -A
+          git commit -qm "capturas ${{ github.run_id }}"
+          git push -f origin capturas
