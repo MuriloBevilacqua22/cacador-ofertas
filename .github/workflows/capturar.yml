@@ -1,0 +1,39 @@
+# Salva o HTML real das buscas das lojas (para criar testes). Rodar manualmente.
+name: capturar páginas
+on:
+  workflow_dispatch:
+    inputs:
+      store:
+        description: "Loja (kabum, pichau, terabyte). Vazio = todas"
+        required: false
+        default: ""
+      term:
+        description: "Termo de busca. Vazio = lote padrão"
+        required: false
+        default: ""
+jobs:
+  capturar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install .
+      - name: Capturar
+        env:
+          STORE: ${{ inputs.store }}
+          TERM_IN: ${{ inputs.term }}
+        run: |
+          stores="${STORE:-kabum pichau terabyte}"
+          for s in $stores; do
+            if [ -n "$TERM_IN" ]; then
+              python -m coletor.capturar --store "$s" --term "$TERM_IN"
+            else
+              for t in "rtx 4070" "iphone 16 pro" "headset corsair"; do
+                python -m coletor.capturar --store "$s" --term "$t"
+              done
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        with: {name: capturas, path: capturas/}
