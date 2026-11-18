@@ -14,6 +14,9 @@ from coletor.precos import parse_brl
     ("De R$ 2.199,00 por R$ 1.899,00", Decimal("1899.00")),
     ("R$ 12.499,99 à vista", Decimal("12499.99")),
     ("R$\xa01.234,56", Decimal("1234.56")),
+    ("R$ 4,299.99", Decimal("4299.99")),            # formato americano (Pichau)
+    ("de R$ 6,525.00 por: R$ 4,299.99", Decimal("4299.99")),
+    ("R$ 899.90", Decimal("899.90")),
     ("", None),
     (None, None),
     ("Indisponível", None),
