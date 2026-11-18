@@ -17,7 +17,8 @@ _SLUG_STOP = {"de", "da", "do", "para", "com", "e", "gamer", "processador", "pla
 
 def normalize(text: str) -> str:
     """Minúsculas, sem acento, só letras/números separados por um espaço."""
-    t = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode().lower()
+    t = re.sub(r"[\u2122\u00ae\u00a9]", " ", text)  # ™ ® © viram espaço, não "tm"
+    t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
     return " ".join(re.sub(r"[^a-z0-9]+", " ", t).split())
 
 

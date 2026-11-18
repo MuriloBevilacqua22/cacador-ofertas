@@ -3,13 +3,17 @@
 # Em categorias "fixed", o primeiro modelo que casar vence: mais específico primeiro.
 
 global_exclude: [pc gamer, computador, kit upgrade, capa, pelicula, adesivo]
-used_terms: [seminovo, usado, usada, recondicionado, recondicionada, vitrine, grade a, refurbished, mostruario]
+used_terms: [open box, seminovo, usado, usada, recondicionado, recondicionada, vitrine, grade a, refurbished, mostruario]
 
 categories:
   gpu:
     kind: fixed
-    search_terms: [rtx 3060 ti, rtx 3070, rtx 3080, rtx 3090, rtx 4060, rtx 4070, rtx 4080, rtx 4090,
-                   rtx 5050, rtx 5060, rtx 5070, rtx 5080, rtx 5090]
+    # "placa de video" na frente evita que a busca venha cheia de PC montado
+    search_terms: [placa de video rtx 3060 ti, placa de video rtx 3070, placa de video rtx 3080,
+                   placa de video rtx 3090, placa de video rtx 4060, placa de video rtx 4070,
+                   placa de video rtx 4080, placa de video rtx 4090, placa de video rtx 5050,
+                   placa de video rtx 5060, placa de video rtx 5070, placa de video rtx 5080,
+                   placa de video rtx 5090]
     require_any: [rtx, geforce]
     exclude: [notebook, laptop, suporte, cabo, cooler, backplate, waterblock, riser]
     models:

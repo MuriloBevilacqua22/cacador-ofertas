@@ -89,3 +89,4 @@ def test_terms_for_every_category():
 
 def test_normalize():
     assert normalize("Placa-Mãe  ASUS") == "placa mae asus"
+    assert normalize("RTX™ 4070 Ti®") == "rtx 4070 ti"
