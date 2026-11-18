@@ -1,0 +1,37 @@
+# Robô de coleta: roda de hora em hora (placas de vídeo e iPhones) e, a cada
+# 3 horas no horário de Brasília, também as demais categorias.
+name: coletar preços
+on:
+  schedule:
+    - cron: "7 * * * *"      # toda hora, no minuto 7 (UTC)
+    - cron: "17 3 1 * *"     # dia 1 de cada mês: mantém o agendamento vivo
+  workflow_dispatch:
+concurrency:
+  group: coletar
+  cancel-in-progress: false
+jobs:
+  coletar:
+    if: github.event.schedule != '17 3 1 * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install .
+      - name: Coletar
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python -m coletor.executar
+
+  # O GitHub desliga agendamentos de repositório público após 60 dias sem
+  # atividade. Reativar o workflow pela API zera esse prazo.
+  manter-vivo:
+    if: github.event.schedule == '17 3 1 * *'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/coletar.yml/enable"
